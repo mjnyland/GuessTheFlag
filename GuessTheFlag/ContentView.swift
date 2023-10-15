@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @State private var userScore = 0
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Monaco", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"].shuffled()
     @State private var correctCountry = Int.random(in: 0...2)
     
@@ -53,15 +54,18 @@ struct ContentView: View {
         .alert(scoreTitle, isPresented: $showingScore) {
             Button("Continue", action: askQuestion)
         } message: {
-            Text("Your score is ???")
+            Text("Your score is \(userScore)")
         }
     }
     
     func checkAnswer(_ answer: Int) {
         if (correctCountry == answer) {
             scoreTitle = "You're correct!"
+            userScore += 1
+            
         } else {
-            scoreTitle = "You're incorrect!"
+            scoreTitle = "You're incorrect! That's the flag of \(countries[answer])"
+            userScore -= 1
         }
         showingScore = true
     }
